@@ -25,7 +25,7 @@ SECRET_KEY = '+ozme+v%)ey^lg%!d=%3m#gl()0v%fev7p6wv@%_i%!!+6jjt%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] #This is a security measure to prevent HTTP Host header attacks
 
 
 # Application definition
