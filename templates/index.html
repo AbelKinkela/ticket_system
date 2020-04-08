@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Homepage</h1>
+<h1>Message board homepage</h1>
+<ul>
+    {% for request in all_requests_list %}
+    <li>{{ request }}</li>
+    {% endfor %}
+</ul>
 {% endblock content %}
