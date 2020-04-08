@@ -1,5 +1,36 @@
-<header>
-    <a href="{% url 'index' %}">Home</a> | <a href="{% url 'about' %}">About</a>
-</header>
-{% block content %}
-{% endblock content %}
+{% load static %}
+<html>
+
+<head>
+    <title>GCU Audio Visual Request </title>
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:rel=" stylesheet">
+</head>
+
+<body>
+
+    <header>
+        {% if user.is_authenticated %}
+        <p>Hi {{ user.username }}!</p>
+        <p><a href="{% url 'logout' %}">Log out</a></p>
+        {% else %}
+        <p>You are not logged in.</p>
+        <a href="{% url 'login' %}">Log In</a>
+        {% endif %}
+        <div class="nav-left">
+            <h1><a href="{% url 'index' %}">Django blog</a></h1>
+        </div>
+        <div class="nav-right">
+            <a href="{% url 'new_request' %}">+Submit New Request</a>
+        </div>
+        <div>
+            <a href="{% url 'about' %}">About</a>
+        </div>
+    </header>
+
+    {% block content %}
+    {% endblock content %}
+
+</body>
+
+</html>

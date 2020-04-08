@@ -1,7 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView
-from django.http import HttpResponse
-from django.views.generic import ListView
+from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView
 from .models import Request, Ticket, Comments
 
 # Create your views here.
@@ -14,3 +13,18 @@ class HomePageView(ListView):
 
 class AboutPageView(TemplateView):
     template_name = 'about.html'
+
+class RequestCreateView(CreateView):
+    model = Request
+    template_name = 'new_request.html'
+    fields = '__all__'
+
+class RequestDetailView(DetailView):
+    model = Request
+    template_name = 'request_detail.html'
+    
+
+class RequestUpdateView(UpdateView):
+    model = Request
+    template_name = 'edit_request.html'
+    fields = '__all__'

@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Message board homepage</h1>
+<h2>Message board homepage</h2>
 <ul>
     {% for request in all_requests_list %}
-    <li>{{ request }}</li>
+    <div><a href="{% url 'request_detail' request.pk %}">{{ request.equipment_name }}</a>
+        | {{ request.event_date }}
+    </div>
+
     {% endfor %}
 </ul>
 {% endblock content %}

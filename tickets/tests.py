@@ -1,6 +1,6 @@
-from django.test import SimpleTestCase, TestCase
-from .models import Request, Ticket, Comments, Ticket_Number_Generator
-from django.core.exceptions import ValidationError
+from django.test import Client, TestCase
+from .models import Request, Ticket, Comments
+from django.contrib.auth import get_user_model
 
 # Create your tests here.
 
@@ -21,26 +21,25 @@ class SimpleTests(TestCase):
 
 #TESTING DATABASE TABLES
 class UserTestCase(TestCase):
-
     def setUp(self):
-        User.objects.create(first_name="John", last_name="Betilson", email="jbeti200@caledonian.ac.uk")
-        User.objects.create(first_name="Papy", last_name="Mayela", email="pmaye200@caledonian.ac.uk")
+        get_user_model().objects.create_user(username='John',email='jbeti200@caledonian.ac.uk',password='qwertyuioP+1')
+        get_user_model().objects.create(username="Papy", email="pmaye200@caledonian.ac.uk", password='qwertyuioP+2')
     
     def test_user_details(self):
-        john=User.objects.get(first_name="John")
-        papy=User.objects.get(first_name="Papy")
-        self.assertEqual(john.first_name, 'John')
-        self.assertEqual(papy.last_name, 'Mayela')
+        john=get_user_model().objects.get(username="John")
+        papy=get_user_model().objects.get(username="Papy")
+        self.assertEqual(john.username, 'John')
+        self.assertEqual(papy.email, 'pmaye200@caledonian.ac.uk')
 
 class RequestTestCase(TestCase):
 
     def setUp(self):
-        john=User.objects.create(first_name="John", last_name="Betilson", email="jbeti200@caledonian.ac.uk")
+        john=get_user_model().objects.create(username='John',email='jbeti200@caledonian.ac.uk',password='qwertyuioP+1')
         Request.objects.create(equipment_name="Projector", event_date='2020-04-08', description="Projector is needed for the class on the topic of plagiarism", user=john)
     
     def test_request_details(self):
         projector=Request.objects.get(equipment_name="Projector")
-        self.assertEqual(projector.user.first_name, 'John')
+        self.assertEqual(projector.user.username, 'John')
 
 
 # PRIORITY= (
@@ -54,15 +53,14 @@ class RequestTestCase(TestCase):
 # class TicketTestCase(TestCase):
 
 #     def setUp(self):
-#         with self.assertRaises(ValidationError):
-#             abel=User.objects.create(first_name="Abel", last_name="Kinkela", email="akinke200@caledonian.ac.uk")
-#             papy=User.objects.create(first_name="Papy", last_name="Mayela", email="pmaye200@caledonian.ac.uk")
-#             john=User.objects.create(first_name="John", last_name="Betilson", email="jbeti200@caledonian.ac.uk")
+
+#             abel=User.objects.create( username="Abel", email="akinke200@caledonian.ac.uk", password='qwertyuioP+1')
+#             papy=User.objects.create( username="Papy",  email="pmaye200@caledonian.ac.uk", password='qwertyuioP+1')
+#             john=User.objects.create( username="John", email="jbeti200@caledonian.ac.uk", password='qwertyuioP+1')
 #             projector=Request.objects.create(equipment_name="Projector", event_date='2020-04-08', description="Projector is needed for the class on the topic of plagiarism", user=john)
 #             Ticket.objects.create(number=Ticket_Number_Generator(), ticket_type=TYPE_OF_TICKET[0], date="2020-04-08", item_collection_date="2020-04-18", item_collected=False, status=TICKET_STATUS[0], request=projector, priority=PRIORITY[0], creator=papy, assigned_To=abel)
 
 #     def test_ticket_details(self):
-#         with self.assertRaises(ValidationError):
 #             gcuavs11=Ticket.objects.get(number="gcuavs11")
 #             self.assertEqual(gcuavs11.request.user.email, 'jbeti200@caledonian.ac.uk')
 #             self.assertEqual(gcuavs11.creator.email, 'pmaye200@caledonian.ac.uk')

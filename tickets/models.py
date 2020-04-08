@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 #USER MODEL
 # class User(models.Model):
@@ -30,10 +31,12 @@ class Event_Logs(models.Model):
 class Request(models.Model):
     equipment_name=models.CharField(max_length=60)
     event_date=models.DateField()
-    description=models.CharField(max_length=500)
+    description=models.TextField()
     user=models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     def __str__(self):
-        return "%s %s %s" % (self.request_id, self.equipment_name, self.user_id)
+        return "%s %s %s" % (self.pk, self.equipment_name, self.user.first_name)
+    def get_absolute_url(self): # new
+        return reverse('request_detail', args=[str(self.pk)])
 
 # TICKET MODEL
 PRIORITY= (
@@ -41,15 +44,7 @@ PRIORITY= (
 )
 TICKET_STATUS = (("OPEN","OPEN"),("IN_PROGRESS","IN PROGRESS"),("CLOSED","CLOSED"))
 TYPE_OF_TICKET = (("EQUIPMENT_AVAILABE","EQUIPMENT_AVAILABE"),("EQUIPMENT_NOT_AVAILABLE","EQUIPMENT NOT AVAILABLE"),("CLOSED","CLOSED"))
-#A manager class to generate ticket numbers
-class Ticket_Number_Generator(models.Manager):
-    def generate_number(self):
-        ticket_prefix="GCUAVS"
-        return str(ticket_prefix+self.pk)
-
-
 class Ticket(models.Model):
-    number = Ticket_Number_Generator()
     ticket_type = models.CharField(choices=TYPE_OF_TICKET, max_length=23, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     item_collection_date = models.DateTimeField()
@@ -60,7 +55,7 @@ class Ticket(models.Model):
     creator = models.ForeignKey(get_user_model(), related_name='%(class)s_requests_created', on_delete= models.DO_NOTHING)
     assigned_To = models.ForeignKey(get_user_model(), on_delete=models.DO_NOTHING)
     def __str__(self):
-        return "%s %s %s %s %s" % (self.number, self.request.equipment_name, self.ticket_type, self.status, self.priority)
+        return "%s %s %s %s %s" % (self.id, self.request.equipment_name, self.ticket_type, self.status, self.priority)
     
 class Comments(models.Model):
     ticket = models.ForeignKey(Ticket,on_delete=models.CASCADE)

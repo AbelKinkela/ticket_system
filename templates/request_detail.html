@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="request-entry">
+    <h2>Request Details</h2>
+    <p>Equipment requested: {{ object.equipment_name }}</p>
+    <p>Your event date: {{ object.event_date }}</p>
+    <p>User Name: {{ object.user.username }}</p>
+</div>
+<a href="{% url 'edit_request' request.pk %}">+Edit Request</a>
+{% endblock content %}
