@@ -18,6 +18,9 @@ class RequestCreateView(CreateView):
     model = Request
     template_name = 'new_request.html'
     fields = '__all__'
+    def form_valid(self, form): 
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 class RequestDetailView(DetailView):
     model = Request

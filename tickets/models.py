@@ -35,7 +35,7 @@ class Request(models.Model):
     user=models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     def __str__(self):
         return "%s %s %s" % (self.pk, self.equipment_name, self.user.first_name)
-    def get_absolute_url(self): # new
+    def get_absolute_url(self): 
         return reverse('request_detail', args=[str(self.pk)])
 
 # TICKET MODEL
