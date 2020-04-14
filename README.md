@@ -1,3 +1,3 @@
 # ticket_system
 Python 3.6 used, 
-Install django
+This was built in django(python)
